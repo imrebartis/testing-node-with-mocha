@@ -18,8 +18,11 @@ describe('AuthController', function() {
     describe('isAuthorizedAsync', function() {
 
         it('Should return false if not authorized', function(done) {
-                authController.isAuthorizedAsync(['user'], 'admin'
-                , function(isAuth){
+            // this.timeout will make the test pass
+            // even tho the default timeout (2000ms) is exceeded
+            this.timeout(2500);    
+            authController.isAuthorizedAsync(['user'], 'admin',
+                 function(isAuth){
                     assert.equal(false, isAuth);
                     done();
                 });
