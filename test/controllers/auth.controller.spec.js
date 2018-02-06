@@ -84,17 +84,20 @@ describe('AuthController', function() {
             // the sinon.stub lets us have direct control over the func
             // e.g. we don't have to call out to the database,
             // or we could throw errors
-            var isAuth = sinon.stub(user, 'isAuthorized').throws();
+            var isAuth = sinon.stub(user, 'isAuthorized').returns(true);
             var req = {user: user};
             var res= {
                 // creating a fake function
-                render: sinon.spy()
+                render: function(){}
             };
+
+            var mock = sinon.mock(res);
+            mock.expects('render').once().withExactArgs('index');
 
             authController.getIndex(req, res);
             isAuth.calledOnce.should.be.true;
-            res.render.calledOnce.should.be.true;
-            res.render.firstCall.args[0].should.equal('error')
+
+            mock.verify();
         })
     })
 
