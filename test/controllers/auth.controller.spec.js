@@ -4,6 +4,7 @@ var expect = require('chai').expect;
 var should = require('chai').should();
 var chai = require("chai");
 var chaiAsPromised = require("chai-as-promised");
+var sinon = require('sinon');
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -55,6 +56,29 @@ describe('AuthController', function() {
 
         })
 
+    })
+
+    describe('getIndex', function () {
+        // var user = {};
+        // beforeEach(function () {
+        //      user = {
+        //         roles: ['user'],
+        //         isAuthorized: function (neededRole) {
+        //            return this.roles.indexOf(neededRole) >= 0;
+        //         }
+        //     }
+        // });
+        it('should render index', function () {
+            var req = {};
+            var res= {
+                // creating a fake function
+                render: sinon.spy()
+            };
+
+            authController.getIndex(req, res);
+            res.render.calledOnce.should.be.true;
+            res.render.firstCall.args[0].should.equal('index')
+        })
     })
 
 });
