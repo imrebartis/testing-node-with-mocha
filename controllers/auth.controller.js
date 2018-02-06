@@ -27,10 +27,18 @@ function AuthController(){
     }
 
     function getIndex(req, res) {
-        // this is not a function
-        res.render('index')
-    }
 
+        try {
+            if (req.user.isAuthorized('admin')) {
+                // res.render will be only called once (because of 'return')
+                return res.render('index');
+            }
+            res.render('notAuth');
+
+        } catch (e) {
+            res.render('error')
+        }
+    }
     return {isAuthorized, isAuthorizedAsync, setRoles, setUser, isAuthorizedPromise, getIndex};
 }
 

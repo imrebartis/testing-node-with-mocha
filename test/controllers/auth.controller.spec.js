@@ -20,7 +20,7 @@ describe('AuthController', function() {
     //     throw({error:'error'})
     // });
 
-    describe.only('isAuthorized', function() {
+    describe('isAuthorized', function() {
         var user = {};
         beforeEach(function () {
              user = {
@@ -32,11 +32,11 @@ describe('AuthController', function() {
             sinon.spy(user, 'isAuthorized'); // lets us watch a function with console.log
             authController.setUser(user);
         });
-        it.only('Should return false if not authorized', function() {
+        it('Should return false if not authorized', function() {
             // authController.setRoles(['user']);
             // assert.equal(false, authController.isAuthorized('admin'));
             var isAuth = authController.isAuthorized('admin');
-            console.log(user.isAuthorized);
+            // console.log(user.isAuthorized);
             user.isAuthorized.calledOnce.should.be.true;
             isAuth.should.be.false;
         })
@@ -70,26 +70,31 @@ describe('AuthController', function() {
 
     })
 
-    describe('getIndex', function () {
-        // var user = {};
-        // beforeEach(function () {
-        //      user = {
-        //         roles: ['user'],
-        //         isAuthorized: function (neededRole) {
-        //            return this.roles.indexOf(neededRole) >= 0;
-        //         }
-        //     }
-        // });
-        it('should render index', function () {
-            var req = {};
+    describe.only('getIndex', function () {
+        var user = {};
+        beforeEach(function () {
+             user = {
+                roles: ['user'],
+                isAuthorized: function (neededRole) {
+                   return this.roles.indexOf(neededRole) >= 0;
+                }
+            }
+        });
+        it('should render index if authorized', function () {
+            // the sinon.stub lets us have direct control over the func
+            // e.g. we don't have to call out to the database,
+            // or we could throw errors
+            var isAuth = sinon.stub(user, 'isAuthorized').throws();
+            var req = {user: user};
             var res= {
                 // creating a fake function
                 render: sinon.spy()
             };
 
             authController.getIndex(req, res);
+            isAuth.calledOnce.should.be.true;
             res.render.calledOnce.should.be.true;
-            res.render.firstCall.args[0].should.equal('index')
+            res.render.firstCall.args[0].should.equal('error')
         })
     })
 
