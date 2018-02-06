@@ -8,13 +8,13 @@ describe('AuthController', function() {
         authController.setRoles(['user']);
     });
 
-    beforeEach('this func is erroring intentionally', function erroringFunction() {
-        throw({error:'error'})
-    });
+    // beforeEach('this func is erroring intentionally', function erroringFunction() {
+    //     throw({error:'error'})
+    // });
 
-    describe('isAuthorized', function() {
+    describe.only('isAuthorized', function() {
 
-        it('Should return false if not authorized', function() {
+        it.skip('Should return false if not authorized', function() {
             authController.setRoles(['user']);
             assert.equal(false, authController.isAuthorized('admin'));
         })
@@ -22,6 +22,8 @@ describe('AuthController', function() {
             authController.setRoles(['user', 'admin']);
             assert.equal(true, authController.isAuthorized('admin'));
         })
+        it('should not allow a get if not authorized');
+        it('should allow get if authorized');
     })
 
     describe('isAuthorizedAsync', function() {
