@@ -8,5 +8,9 @@ describe('Basic Mocha Test', function () {
 
         // obj.should.have.property('name').equal('Jon');
         obj.should.deep.equal(objB);
+    });
+    it('should allow testing nulls', function () {
+        var iAmNull = null;
+        should.not.exist(iAmNull);
     })
 });
