@@ -8,6 +8,10 @@ describe('AuthController', function() {
         authController.setRoles(['user']);
     });
 
+    beforeEach('this func is erroring intentionally', function erroringFunction() {
+        throw({error:'error'})
+    });
+
     describe('isAuthorized', function() {
 
         it('Should return false if not authorized', function() {
