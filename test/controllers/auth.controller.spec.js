@@ -13,20 +13,32 @@ describe('AuthController', function() {
 
     beforeEach(function settingUpRoles() {
         console.log('running before each');
-        authController.setRoles(['user']);
+        // authController.setRoles(['user']);
     });
 
     // beforeEach('this func is erroring intentionally', function erroringFunction() {
     //     throw({error:'error'})
     // });
 
-    describe('isAuthorized', function() {
-
-        it('Should return false if not authorized', function() {
+    describe.only('isAuthorized', function() {
+        var user = {};
+        beforeEach(function () {
+             user = {
+                roles: ['user'],
+                isAuthorized: function (neededRole) {
+                   return this.roles.indexOf(neededRole) >= 0;
+                }
+            }
+            sinon.spy(user, 'isAuthorized'); // lets us watch a function with console.log
+            authController.setUser(user);
+        });
+        it.only('Should return false if not authorized', function() {
             // authController.setRoles(['user']);
             // assert.equal(false, authController.isAuthorized('admin'));
             var isAuth = authController.isAuthorized('admin');
-            expect(isAuth).to.be.false;
+            console.log(user.isAuthorized);
+            user.isAuthorized.calledOnce.should.be.true;
+            isAuth.should.be.false;
         })
         it('Should return true if authorized', function() {
             authController.setRoles(['user', 'admin']);
