@@ -2,8 +2,13 @@ var assert = require('assert');
 var authController = require('../../controllers/auth.controller');
 var expect = require('chai').expect;
 var should = require('chai').should();
+var chai = require("chai");
+var chaiAsPromised = require("chai-as-promised");
 
-describe.skip('AuthController', function() {
+chai.use(chaiAsPromised);
+chai.should();
+
+describe('AuthController', function() {
 
     beforeEach(function settingUpRoles() {
         console.log('running before each');
@@ -14,7 +19,7 @@ describe.skip('AuthController', function() {
     //     throw({error:'error'})
     // });
 
-    describe.only('isAuthorized', function() {
+    describe('isAuthorized', function() {
 
         it('Should return false if not authorized', function() {
             // authController.setRoles(['user']);
@@ -41,6 +46,15 @@ describe.skip('AuthController', function() {
                     done();
                 });
         })
+    })
+
+    describe('isAuthorizedPromise', function () {
+
+        it('Should return false if not authorized', function () {
+            return authController.isAuthorizedPromise('admin').should.eventually.be.false;
+
+        })
+
     })
 
 });
